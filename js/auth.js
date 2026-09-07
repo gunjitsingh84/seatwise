@@ -187,4 +187,71 @@ async function initializeAcademicSessionUI() {
     }, true);
 })();
 
+/* Saved Class Structure layout: full-width class cards with a three-column section grid. */
+(function applySavedClassReferenceLayout() {
+    if (!document.querySelector('.saved-grid')) return;
+
+    const style = document.createElement('style');
+    style.id = 'seatwise-saved-class-reference-layout';
+    style.textContent = `
+        .saved-grid {
+            display: block !important;
+        }
+
+        .saved-grid .class-card {
+            display: grid !important;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            margin: 0 0 18px 0 !important;
+            width: 100%;
+        }
+
+        .saved-grid .class-card:last-child {
+            margin-bottom: 0 !important;
+        }
+
+        .saved-grid .class-head {
+            grid-column: 1 / -1;
+            width: 100%;
+        }
+
+        .saved-grid .section-row {
+            min-width: 0;
+            border-bottom: 1px solid #eef1f5;
+            border-right: 1px solid #eef1f5;
+        }
+
+        .saved-grid .section-row:nth-child(3n) {
+            border-right: 0;
+        }
+
+        .saved-grid .section-row:last-child {
+            border-bottom: 0;
+        }
+
+        @media (max-width: 1100px) {
+            .saved-grid .class-card {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .saved-grid .section-row:nth-child(3n) {
+                border-right: 1px solid #eef1f5;
+            }
+            .saved-grid .section-row:nth-child(2n) {
+                border-right: 0;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .saved-grid .class-card {
+                grid-template-columns: 1fr;
+            }
+            .saved-grid .section-row,
+            .saved-grid .section-row:nth-child(2n),
+            .saved-grid .section-row:nth-child(3n) {
+                border-right: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+})();
+
 document.addEventListener('DOMContentLoaded', initializeAcademicSessionUI);
