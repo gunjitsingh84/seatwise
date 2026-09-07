@@ -84,6 +84,56 @@ function normalizePhone(value) {
     return value.replace(/\D/g, '');
 }
 
+/*
+ * SeatWise Academic Session
+ * Academic year runs from 1 April through 31 March.
+ * Example: 1 Apr 2026 - 31 Mar 2027 = 2026-2027.
+ */
+function getCurrentAcademicSession(date = new Date()) {
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const startYear = month >= 3 ? year : year - 1;
+    return `${startYear}-${startYear + 1}`;
+}
+
+async function ensureCurrentAcademicSession() {
+    const sessionName = getCurrentAcademicSession();
+    const startYear = Number(sessionName.slice(0, 4));
+
+    const startDate = `${startYear}-04-01`;
+    const endDate = `${startYear + 1}-03-31`;
+
+    const { error } = await seatwiseDb
+        .from('academic_sessions')
+        .upsert(
+            {
+                session_name: sessionName,
+                start_date: startDate,
+                end_date: endDate
+            },
+            { onConflict: 'session_name' }
+        );
+
+    if (error) {
+        console.error('Academic session error:', error);
+    }
+
+    return sessionName;
+}
+
+/* Show the current academic session wherever a saved class structure exists. */
+async function initializeAcademicSessionUI() {
+    const savedHead = document.querySelector('.saved-head');
+    if (!savedHead) return;
+
+    const sessionName = await ensureCurrentAcademicSession();
+    const description = savedHead.querySelector('p');
+
+    if (description) {
+        description.textContent = `Current Session: ${sessionName}`;
+    }
+}
+
 /* Route the login keypad to the 10 phone boxes first. */
 (function setupLoginPhoneKeypad() {
     function getPhoneInputs() {
@@ -136,3 +186,5 @@ function normalizePhone(value) {
         }
     }, true);
 })();
+
+document.addEventListener('DOMContentLoaded', initializeAcademicSessionUI);
