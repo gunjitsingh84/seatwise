@@ -25,3 +25,41 @@ before update on public.rooms
 for each row execute function public.set_rooms_updated_at();
 
 alter table public.rooms enable row level security;
+
+-- SeatWise currently uses its own PIN-based admin session rather than
+-- Supabase Auth, so browser requests use the anon role. These policies
+-- allow the Rooms CRUD UI to work with that architecture.
+drop policy if exists "rooms_select" on public.rooms;
+drop policy if exists "rooms_insert" on public.rooms;
+drop policy if exists "rooms_update" on public.rooms;
+drop policy if exists "rooms_delete" on public.rooms;
+
+drop policy if exists "Allow public read access to rooms" on public.rooms;
+drop policy if exists "Allow public insert access to rooms" on public.rooms;
+drop policy if exists "Allow public update access to rooms" on public.rooms;
+drop policy if exists "Allow public delete access to rooms" on public.rooms;
+
+create policy "rooms_select"
+on public.rooms
+for select
+to anon, authenticated
+using (true);
+
+create policy "rooms_insert"
+on public.rooms
+for insert
+to anon, authenticated
+with check (true);
+
+create policy "rooms_update"
+on public.rooms
+for update
+to anon, authenticated
+using (true)
+with check (true);
+
+create policy "rooms_delete"
+on public.rooms
+for delete
+to anon, authenticated
+using (true);
