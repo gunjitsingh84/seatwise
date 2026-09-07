@@ -83,3 +83,56 @@ async function changeAdminPin(userId, newPin) {
 function normalizePhone(value) {
     return value.replace(/\D/g, '');
 }
+
+/* Route the login keypad to the 10 phone boxes first. */
+(function setupLoginPhoneKeypad() {
+    function getPhoneInputs() {
+        return Array.from(document.querySelectorAll('#loginPhoneDigits .phone-digit'));
+    }
+
+    function getPhoneValue() {
+        return getPhoneInputs().map(input => input.value).join('');
+    }
+
+    function addPhoneDigit(digit) {
+        const inputs = getPhoneInputs();
+        const nextIndex = inputs.findIndex(input => !input.value);
+        if (nextIndex === -1) return;
+
+        inputs[nextIndex].value = digit;
+
+        if (nextIndex < inputs.length - 1) {
+            inputs[nextIndex + 1].focus();
+        } else {
+            const pinBox = document.querySelector('#pinContainer .pin-box');
+            if (pinBox) pinBox.classList.add('ready');
+        }
+    }
+
+    function clearPhone() {
+        const inputs = getPhoneInputs();
+        inputs.forEach(input => input.value = '');
+        if (inputs[0]) inputs[0].focus();
+    }
+
+    document.addEventListener('click', function(event) {
+        const key = event.target.closest('.key[data-number]');
+        const clear = event.target.closest('#clearButton');
+        if (!key && !clear) return;
+
+        const phone = getPhoneValue();
+
+        if (key && phone.length < 10) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            addPhoneDigit(key.dataset.number);
+            return;
+        }
+
+        if (clear && phone.length < 10) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            clearPhone();
+        }
+    }, true);
+})();
