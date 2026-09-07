@@ -8,18 +8,20 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--blue:#1f5fbf;--navy:#174c9e;--soft:#eef5ff;--white:#fff;--text:#1e293b;--muted:#667085;--line:#d8e0ea;--danger:#c33d32;--danger-bg:#fff1ef;--success:#218342;--success-bg:#edf9f0}
 html,body{width:100%;height:100%;overflow:hidden}
-body{font-family:Inter,Arial,Helvetica,sans-serif;background:radial-gradient(circle at 0 100%,#b8d2fa 0, #dce9fb 17%, transparent 17.5%),radial-gradient(circle at 100% 0,#dfe9f8 0,transparent 18%),linear-gradient(135deg,#eaf1fb,#f8fafc);color:var(--text)}
+body{font-family:Inter,Arial,Helvetica,sans-serif;background:radial-gradient(circle at 0 100%,#b8d2fa 0,#dce9fb 17%,transparent 17.5%),radial-gradient(circle at 100% 0,#dfe9f8 0,transparent 18%),linear-gradient(135deg,#eaf1fb,#f8fafc);color:var(--text)}
 button,input{font-family:inherit}button{cursor:pointer}
 .login-page{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 24px;overflow:hidden}
-.login-container{width:100%;max-width:952px;height:min(553px,calc(100vh - 55px));display:grid;grid-template-columns:38% 62%;background:#fff;border-radius:19px;overflow:hidden;border:1px solid #dce4ef;box-shadow:0 22px 52px rgba(28,56,95,.17)}
+/* Increased ~7% from the previous 952x553 layout. */
+.login-container{width:100%;max-width:1019px;height:min(592px,calc(100vh - 55px));display:grid;grid-template-columns:38% 62%;background:#fff;border-radius:20px;overflow:hidden;border:1px solid #dce4ef;box-shadow:0 22px 52px rgba(28,56,95,.17)}
 .brand-panel{position:relative;overflow:hidden;padding:42px 34px 65px;display:flex;flex-direction:column;align-items:center;background:linear-gradient(to bottom,#f6f9ff 0,#e8f0fc 74%,#1c58b5 74%)}
 .brand-content{text-align:center;position:relative;z-index:2}.school-logo{width:82px;height:82px;margin:0 auto 20px;border:3px solid var(--blue);border-radius:23px 23px 35px 35px;display:flex;align-items:center;justify-content:center;position:relative;color:var(--blue)}.school-logo:before{content:"▰";position:absolute;font-size:36px;transform:translateY(-2px)}.school-logo:after{content:"★ ★ ★";position:absolute;top:8px;font-size:7px;letter-spacing:3px}.brand-title{font-size:38px;font-weight:800;letter-spacing:-1.5px;margin-bottom:13px}.brand-title span{color:var(--blue)}.brand-subtitle{color:#4f5d70;font-size:15px;line-height:1.45}.brand-line{width:44px;height:3px;background:var(--blue);border-radius:5px;margin:20px auto 0}
 .classroom-visual{position:absolute;left:0;right:0;bottom:60px;height:215px}.board{position:absolute;width:88px;height:76px;left:21px;bottom:77px;border:4px solid #d4e0f1;background:#edf4fc}.window{position:absolute;width:72px;height:108px;right:21px;bottom:72px;background:linear-gradient(90deg,#e2ebf8 48%,#bccce4 48%,#bccce4 52%,#e2ebf8 52%)}.window:before{content:"";position:absolute;left:0;right:0;top:50%;height:3px;background:#bccce4}.main-desk{position:absolute;width:176px;height:13px;bottom:51px;left:67px;background:#5f6d7d;border-radius:3px}.main-desk:before{content:"";position:absolute;width:3px;height:84px;background:#5d6977;left:8px;top:11px;box-shadow:153px 0 #5d6977}.main-chair{position:absolute;width:72px;height:44px;left:125px;bottom:49px;background:var(--blue);border-radius:12px 12px 4px 4px}.main-chair:before{content:"";position:absolute;width:80px;height:11px;background:#1b59b6;top:50px;left:-4px;border-radius:8px}.main-chair:after{content:"";position:absolute;width:3px;height:56px;background:#5d6977;top:58px;left:4px;box-shadow:65px 0 #5d6977}.secure-footer{position:absolute;left:0;right:0;bottom:0;height:60px;background:linear-gradient(90deg,#15489d,#1d5dbc);display:flex;align-items:center;justify-content:center;gap:9px;color:#fff;font-size:13px}
 .login-panel{display:flex;align-items:center;justify-content:center;padding:30px 46px}.login-content{width:100%;max-width:450px}.login-heading{text-align:center}.login-heading h1{font-size:32px;font-weight:800;letter-spacing:-.8px}.heading-line{width:44px;height:3px;margin:17px auto;background:var(--blue);border-radius:5px}.login-heading p{color:var(--muted);font-size:14px;margin-bottom:20px}
-.form-label{display:block;font-size:12px;font-weight:700;margin:0 0 7px;color:#475467}.phone-input,.text-input{width:100%;height:44px;border:1px solid var(--line);border-radius:9px;padding:0 13px;font-size:14px;outline:0;background:#fff}.phone-input:focus,.text-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(31,95,191,.1)}.phone-wrap{margin-bottom:14px}
+.form-label{display:block;font-size:12px;font-weight:700;margin:0 0 7px;color:#475467}
+.phone-wrap{margin-bottom:14px}.phone-digits{display:flex;justify-content:center;gap:6px;width:100%}.phone-digit{width:36px;height:48px;border:2px solid #c6d5ea;border-radius:9px;text-align:center;font-size:18px;font-weight:700;color:var(--text);outline:0;background:#fff}.phone-digit:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(31,95,191,.1)}
 .pin-label-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.pin-label-row .form-label{margin:0}.forgot-link,.signup-link{border:0;background:transparent;color:var(--blue);font-size:12px;font-weight:700;padding:0}.pin-container{display:flex;justify-content:center;gap:12px;margin-bottom:14px}.pin-box{width:58px;height:50px;border:2px solid #c6d5ea;border-radius:9px;display:flex;align-items:center;justify-content:center;background:#fff}.pin-dot{width:8px;height:8px;border-radius:50%;background:#475467;opacity:0}.pin-box.active .pin-dot{opacity:1}.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.key{height:48px;border:1px solid var(--line);background:#fff;border-radius:9px;color:var(--text);font-size:18px;font-weight:600;transition:.15s}.key:hover{background:#f2f6fd;border-color:#b9cbe5}.key:active{transform:scale(.97)}.clear-button{background:#eaf2ff;color:#275ba9;font-size:13px}.enter-button{background:linear-gradient(135deg,#286bd0,#1552b6);color:#fff;border-color:#1552b6;font-size:14px}.login-actions{text-align:center;margin-top:14px}.signup-prompt{color:var(--muted);font-size:12px}.message{min-height:0;margin-top:10px;border-radius:8px;padding:8px 12px;text-align:center;font-size:12px;font-weight:500;display:none}.message.show{display:block}.message.error{background:var(--danger-bg);color:var(--danger)}.message.success{background:var(--success-bg);color:var(--success)}.shake{animation:shake .35s ease}@keyframes shake{0%{transform:translateX(0)}25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}.page-footer{margin-top:13px;color:#667085;font-size:11px}
-.modal{position:fixed;inset:0;background:rgba(15,23,42,.48);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal.show{display:flex}.modal-box{width:100%;max-width:430px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 25px 70px rgba(15,23,42,.25)}.modal-head{padding:18px 22px;border-bottom:1px solid #e4eaf2;display:flex;align-items:center;justify-content:space-between}.modal-head h2{font-size:18px}.close{border:0;background:#f3f6fa;border-radius:8px;width:32px;height:32px;font-size:19px;color:var(--muted)}.modal-body{padding:20px 22px}.modal-body>p{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:16px}.field{margin-bottom:15px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:7px}.pin-small{letter-spacing:5px;font-weight:800}.modal-footer{display:flex;justify-content:flex-end;gap:9px;padding:15px 22px;border-top:1px solid #e4eaf2}.btn{padding:10px 16px;border-radius:8px;font-size:12px;font-weight:700}.btn-cancel{border:1px solid #d8e0ea;background:#fff;color:var(--text)}.btn-primary{border:0;background:var(--blue);color:#fff}.btn-primary:disabled{opacity:.6;cursor:not-allowed}.recovered-pin{display:none;background:#eef5ff;border:1px solid #d4e3f8;border-radius:9px;padding:11px;text-align:center;margin-bottom:15px}.recovered-pin.show{display:block}.recovered-pin span{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}.recovered-pin strong{font-size:20px;letter-spacing:5px;color:var(--blue)}.modal-message{display:none;padding:9px 11px;border-radius:8px;font-size:12px;margin-bottom:12px}.modal-message.show{display:block}.modal-message.error{background:var(--danger-bg);color:var(--danger)}.modal-message.success{background:var(--success-bg);color:var(--success)}
-@media(max-width:850px){html,body{overflow:auto}.login-page{height:auto;min-height:100vh;overflow:visible;padding:20px 15px}.login-container{height:auto;min-height:0;grid-template-columns:1fr}.brand-panel{min-height:225px;padding:35px 20px;background:linear-gradient(180deg,#f6f9ff,#e8f0fc)}.classroom-visual,.secure-footer{display:none}.login-panel{padding:30px 25px 35px}.page-footer{margin-top:12px}}@media(max-width:500px){.login-panel{padding:25px 18px}.pin-box{width:52px;height:48px}.key{height:46px}.login-heading h1{font-size:29px}}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.48);display:none;align-items:center;justify-content:center;padding:20px;z-index:100}.modal.show{display:flex}.modal-box{width:100%;max-width:430px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 25px 70px rgba(15,23,42,.25)}.modal-head{padding:18px 22px;border-bottom:1px solid #e4eaf2;display:flex;align-items:center;justify-content:space-between}.modal-head h2{font-size:18px}.close{border:0;background:#f3f6fa;border-radius:8px;width:32px;height:32px;font-size:19px;color:var(--muted)}.modal-body{padding:20px 22px}.modal-body>p{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:16px}.field{margin-bottom:15px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:7px}.text-input{width:100%;height:44px;border:1px solid var(--line);border-radius:9px;padding:0 13px;font-size:14px;outline:0;background:#fff}.text-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(31,95,191,.1)}.modal-phone-digits{display:flex;justify-content:center;gap:5px}.modal-phone-digit{width:32px;height:42px;border:1px solid var(--line);border-radius:8px;text-align:center;font-size:16px;font-weight:700;outline:0}.modal-phone-digit:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(31,95,191,.1)}.pin-small{letter-spacing:5px;font-weight:800}.modal-footer{display:flex;justify-content:flex-end;gap:9px;padding:15px 22px;border-top:1px solid #e4eaf2}.btn{padding:10px 16px;border-radius:8px;font-size:12px;font-weight:700}.btn-cancel{border:1px solid #d8e0ea;background:#fff;color:var(--text)}.btn-primary{border:0;background:var(--blue);color:#fff}.btn-primary:disabled{opacity:.6;cursor:not-allowed}.recovered-pin{display:none;background:#eef5ff;border:1px solid #d4e3f8;border-radius:9px;padding:11px;text-align:center;margin-bottom:15px}.recovered-pin.show{display:block}.recovered-pin span{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}.recovered-pin strong{font-size:20px;letter-spacing:5px;color:var(--blue)}.modal-message{display:none;padding:9px 11px;border-radius:8px;font-size:12px;margin-bottom:12px}.modal-message.show{display:block}.modal-message.error{background:var(--danger-bg);color:var(--danger)}.modal-message.success{background:var(--success-bg);color:var(--success)}
+@media(max-width:850px){html,body{overflow:auto}.login-page{height:auto;min-height:100vh;overflow:visible;padding:20px 15px}.login-container{height:auto;min-height:0;grid-template-columns:1fr}.brand-panel{min-height:225px;padding:35px 20px;background:linear-gradient(180deg,#f6f9ff,#e8f0fc)}.classroom-visual,.secure-footer{display:none}.login-panel{padding:30px 25px 35px}.page-footer{margin-top:12px}}@media(max-width:500px){.login-panel{padding:25px 18px}.phone-digits{gap:4px}.phone-digit{width:29px;height:44px}.pin-box{width:52px;height:48px}.key{height:46px}.login-heading h1{font-size:29px}.modal-phone-digits{gap:3px}.modal-phone-digit{width:27px}}
 </style>
 </head>
 <body>
@@ -31,8 +33,8 @@ button,input{font-family:inherit}button{cursor:pointer}
 <div class="secure-footer"><span>🔒</span>Secure Admin Portal</div>
 </div>
 <div class="login-panel"><div class="login-content">
-<div class="login-heading"><h1>Admin Login</h1><div class="heading-line"></div><p>Enter your phone number and 4-digit PIN</p></div>
-<div class="phone-wrap"><label class="form-label" for="loginPhone">Phone Number</label><input class="phone-input" id="loginPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="Enter phone number" maxlength="15"></div>
+<div class="login-heading"><h1>Admin Login</h1><div class="heading-line"></div><p>Enter your 10-digit phone number and 4-digit PIN</p></div>
+<div class="phone-wrap"><label class="form-label">Phone Number</label><div class="phone-digits" id="loginPhoneDigits" data-phone-group="login"></div></div>
 <div class="pin-label-row"><label class="form-label">PIN</label><button class="forgot-link" type="button" onclick="openForgotModal()">Forgot PIN?</button></div>
 <div class="pin-container" id="pinContainer"><div class="pin-box"><div class="pin-dot"></div></div><div class="pin-box"><div class="pin-dot"></div></div><div class="pin-box"><div class="pin-dot"></div></div><div class="pin-box"><div class="pin-dot"></div></div></div>
 <div class="keypad"><button class="key" data-number="1">1</button><button class="key" data-number="2">2</button><button class="key" data-number="3">3</button><button class="key" data-number="4">4</button><button class="key" data-number="5">5</button><button class="key" data-number="6">6</button><button class="key" data-number="7">7</button><button class="key" data-number="8">8</button><button class="key" data-number="9">9</button><button class="key clear-button" id="clearButton">← Clear</button><button class="key" data-number="0">0</button><button class="key enter-button" id="loginButton">→ Enter</button></div>
@@ -43,9 +45,9 @@ button,input{font-family:inherit}button{cursor:pointer}
 <footer class="page-footer">© 2026 SeatWise. All rights reserved.</footer>
 </main>
 
-<div class="modal" id="signupModal"><div class="modal-box"><div class="modal-head"><h2>Create Admin Account</h2><button class="close" onclick="closeModal('signupModal')">×</button></div><form id="signupForm"><div class="modal-body"><p>Create your administrator account. Only the name, phone number and PIN are stored.</p><div class="field"><label for="signupName">Name</label><input class="text-input" id="signupName" type="text" autocomplete="name" required placeholder="Enter your name"></div><div class="field"><label for="signupPhone">Phone Number</label><input class="text-input" id="signupPhone" type="tel" inputmode="numeric" autocomplete="tel" maxlength="15" required placeholder="Enter phone number"></div><div class="field"><label for="signupPin">4-Digit PIN</label><input class="text-input pin-small" id="signupPin" type="password" inputmode="numeric" maxlength="4" minlength="4" pattern="[0-9]{4}" autocomplete="new-password" required placeholder="••••"></div><div class="field"><label for="signupPinConfirm">Confirm PIN</label><input class="text-input pin-small" id="signupPinConfirm" type="password" inputmode="numeric" maxlength="4" minlength="4" pattern="[0-9]{4}" autocomplete="new-password" required placeholder="••••"></div><div class="modal-message" id="signupMessage"></div></div><div class="modal-footer"><button type="button" class="btn btn-cancel" onclick="closeModal('signupModal')">Cancel</button><button type="submit" class="btn btn-primary" id="signupButton">Create Account</button></div></form></div></div>
+<div class="modal" id="signupModal"><div class="modal-box"><div class="modal-head"><h2>Create Admin Account</h2><button class="close" onclick="closeModal('signupModal')">×</button></div><form id="signupForm"><div class="modal-body"><p>Create your administrator account. Only the name, phone number and PIN are stored.</p><div class="field"><label>Name</label><div class="modal-phone-digits" id="signupPhoneDigits" data-phone-group="signup"></div></div><div class="field"><label for="signupName">Name</label><input class="text-input" id="signupName" type="text" autocomplete="name" required placeholder="Enter your name"></div><div class="field"><label for="signupPin">4-Digit PIN</label><input class="text-input pin-small" id="signupPin" type="password" inputmode="numeric" maxlength="4" minlength="4" pattern="[0-9]{4}" autocomplete="new-password" required placeholder="••••"></div><div class="field"><label for="signupPinConfirm">Confirm PIN</label><input class="text-input pin-small" id="signupPinConfirm" type="password" inputmode="numeric" maxlength="4" minlength="4" pattern="[0-9]{4}" autocomplete="new-password" required placeholder="••••"></div><div class="modal-message" id="signupMessage"></div></div><div class="modal-footer"><button type="button" class="btn btn-cancel" onclick="closeModal('signupModal')">Cancel</button><button type="submit" class="btn btn-primary" id="signupButton">Create Account</button></div></form></div></div>
 
-<div class="modal" id="forgotModal"><div class="modal-box"><div class="modal-head"><h2>Forgot PIN</h2><button class="close" onclick="closeModal('forgotModal')">×</button></div><form id="forgotForm"><div class="modal-body"><p>Enter your registered phone number to retrieve your current PIN and set a new one.</p><div class="field"><label for="forgotPhone">Phone Number</label><input class="text-input" id="forgotPhone" type="tel" inputmode="numeric" autocomplete="tel" maxlength="15" required placeholder="Enter phone number"></div><button type="button" class="btn btn-primary" id="retrievePinButton" onclick="retrievePin()">Retrieve PIN</button><div class="recovered-pin" id="recoveredPin"><span>Current PIN from account</span><strong id="recoveredPinValue">----</strong></div><div id="resetFields" style="display:none"><div class="field"><label for="newPin">New 4-Digit PIN</label><input class="text-input pin-small" id="newPin" type="password" inputmode="numeric" maxlength="4" minlength="4" pattern="[0-9]{4}" autocomplete="new-password" placeholder="••••"></div><div class="field"><label for="newPinConfirm">Confirm New PIN</label><input class="text-input pin-small" id="newPinConfirm" type="password" inputmode="numeric" maxlength="4" minlength="4" pattern="[0-9]{4}" autocomplete="new-password" placeholder="••••"></div><button type="button" class="btn btn-primary" id="changePinButton" onclick="changeRecoveredPin()">Change PIN &amp; Continue</button></div><div class="modal-message" id="forgotMessage"></div></div><div class="modal-footer"><button type="button" class="btn btn-cancel" onclick="closeModal('forgotModal')">Close</button></div></form></div></div>
+<div class="modal" id="forgotModal"><div class="modal-box"><div class="modal-head"><h2>Forgot PIN</h2><button class="close" onclick="closeModal('forgotModal')">×</button></div><form id="forgotForm"><div class="modal-body"><p>Enter your registered 10-digit phone number to retrieve your current PIN and set a new one.</p><div class="field"><label>Phone Number</label><div class="modal-phone-digits" id="forgotPhoneDigits" data-phone-group="forgot"></div></div><button type="button" class="btn btn-primary" id="retrievePinButton" onclick="retrievePin()">Retrieve PIN</button><div class="recovered-pin" id="recoveredPin"><span>Current PIN from account</span><strong id="recoveredPinValue">----</strong></div><div id="resetFields" style="display:none"><div class="field"><label for="newPin">New 4-Digit PIN</label><input class="text-input pin-small" id="newPin" type="password" inputmode="numeric" maxlength="4" minlength="4" pattern="[0-9]{4}" autocomplete="new-password" placeholder="••••"></div><div class="field"><label for="newPinConfirm">Confirm New PIN</label><input class="text-input pin-small" id="newPinConfirm" type="password" inputmode="numeric" maxlength="4" minlength="4" pattern="[0-9]{4}" autocomplete="new-password" placeholder="••••"></div><button type="button" class="btn btn-primary" id="changePinButton" onclick="changeRecoveredPin()">Change PIN &amp; Continue</button></div><div class="modal-message" id="forgotMessage"></div></div><div class="modal-footer"><button type="button" class="btn btn-cancel" onclick="closeModal('forgotModal')">Close</button></div></form></div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/auth.js"></script>
@@ -56,6 +58,45 @@ const pinBoxes=document.querySelectorAll('.pin-box');
 const message=document.getElementById('message');
 const pinContainer=document.getElementById('pinContainer');
 
+function buildPhoneInputs(containerId){
+    const container=document.getElementById(containerId);
+    for(let i=0;i<10;i++){
+        const input=document.createElement('input');
+        input.className='phone-digit';
+        input.type='tel';
+        input.inputMode='numeric';
+        input.maxLength=1;
+        input.pattern='[0-9]';
+        input.autocomplete='off';
+        input.setAttribute('aria-label','Phone digit '+(i+1));
+        input.dataset.index=i;
+        input.addEventListener('input',function(){
+            this.value=this.value.replace(/\D/g,'').slice(0,1);
+            if(this.value && i<9) container.querySelectorAll('input')[i+1].focus();
+        });
+        input.addEventListener('keydown',function(e){
+            if(e.key==='Backspace' && !this.value && i>0) container.querySelectorAll('input')[i-1].focus();
+            if(e.key==='ArrowLeft' && i>0) container.querySelectorAll('input')[i-1].focus();
+            if(e.key==='ArrowRight' && i<9) container.querySelectorAll('input')[i+1].focus();
+        });
+        input.addEventListener('paste',function(e){
+            e.preventDefault();
+            const digits=(e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'').slice(0,10);
+            const inputs=container.querySelectorAll('input');
+            digits.split('').forEach((digit,j)=>{if(i+j<10)inputs[i+j].value=digit});
+            inputs[Math.min(i+digits.length,9)].focus();
+        });
+        container.appendChild(input);
+    }
+}
+function getPhone(containerId){return Array.from(document.getElementById(containerId).querySelectorAll('input')).map(i=>i.value).join('')}
+function setPhone(containerId,value){const inputs=document.getElementById(containerId).querySelectorAll('input');const digits=String(value||'').replace(/\D/g,'').slice(0,10);inputs.forEach((input,i)=>input.value=digits[i]||'')}
+function clearPhone(containerId){setPhone(containerId,'')}
+
+buildPhoneInputs('loginPhoneDigits');
+buildPhoneInputs('signupPhoneDigits');
+buildPhoneInputs('forgotPhoneDigits');
+
 function updatePinDisplay(){pinBoxes.forEach((box,index)=>box.classList.toggle('active',index<enteredPin.length))}
 function showLoginMessage(text,type='error'){message.textContent=text;message.className='message show '+type}
 function clearLoginMessage(){message.textContent='';message.className='message'}
@@ -64,9 +105,8 @@ function clearPin(){enteredPin='';clearLoginMessage();updatePinDisplay()}
 function onlyDigitsInput(id,maxLength){const input=document.getElementById(id);if(!input)return;input.addEventListener('input',()=>{input.value=input.value.replace(/\D/g,'').slice(0,maxLength)})}
 
 async function validateLogin(){
-    const phone=normalizePhone(document.getElementById('loginPhone').value);
-    if(!phone){alert('Please enter your phone number.');return}
-    if(phone.length<7){alert('Please enter a valid phone number.');return}
+    const phone=getPhone('loginPhoneDigits');
+    if(phone.length!==10){alert('Please enter the complete 10-digit phone number.');return}
     if(enteredPin.length!==4){alert('Please enter the complete 4-digit PIN.');return}
     const button=document.getElementById('loginButton');button.disabled=true;
     const {data,error}=await findAdminByPhone(phone);
@@ -74,10 +114,10 @@ async function validateLogin(){
     if(!data||data.pin!==enteredPin){alert('Phone number or PIN is incorrect.');pinContainer.classList.add('shake');setTimeout(()=>pinContainer.classList.remove('shake'),350);enteredPin='';updatePinDisplay();await logActivity('LOGIN_FAILED',{phone});button.disabled=false;return}
     if(data.must_change_pin){
         setSeatwiseSession(data);
-        await logActivity('LOGIN_PIN_CHANGE_REQUIRED',{reason:'PIN recovery required'} ,data.id);
+        await logActivity('LOGIN_PIN_CHANGE_REQUIRED',{reason:'PIN recovery required'},data.id);
         button.disabled=false;
         openForgotModal(data.phone);
-        document.getElementById('forgotPhone').value=data.phone;
+        setPhone('forgotPhoneDigits',data.phone);
         document.getElementById('retrievePinButton').style.display='none';
         recoveredUser=data;
         document.getElementById('recoveredPinValue').textContent=data.pin;
@@ -94,11 +134,10 @@ async function validateLogin(){
 document.querySelectorAll('[data-number]').forEach(button=>button.addEventListener('click',()=>addDigit(button.dataset.number)));
 document.getElementById('clearButton').addEventListener('click',clearPin);
 document.getElementById('loginButton').addEventListener('click',validateLogin);
-document.getElementById('loginPhone').addEventListener('keydown',e=>{if(e.key==='Enter')validateLogin()});
 document.addEventListener('keydown',e=>{if(e.target.matches('input,textarea'))return;if(e.key>='0'&&e.key<='9')addDigit(e.key);if(e.key==='Backspace'){enteredPin=enteredPin.slice(0,-1);updatePinDisplay()}if(e.key==='Enter')validateLogin();if(e.key==='Escape'){clearPin();closeModal('signupModal');closeModal('forgotModal')}});
 
-function openSignupModal(){clearModal('signupMessage');document.getElementById('signupForm').reset();document.getElementById('signupModal').classList.add('show');document.getElementById('signupName').focus()}
-function openForgotModal(prefill=''){clearModal('forgotMessage');document.getElementById('forgotForm').reset();document.getElementById('forgotPhone').value=prefill;document.getElementById('recoveredPin').classList.remove('show');document.getElementById('resetFields').style.display='none';document.getElementById('retrievePinButton').style.display='inline-block';recoveredUser=null;document.getElementById('forgotModal').classList.add('show');if(!prefill)document.getElementById('forgotPhone').focus()}
+function openSignupModal(){clearModal('signupMessage');document.getElementById('signupForm').reset();clearPhone('signupPhoneDigits');document.getElementById('signupModal').classList.add('show');document.getElementById('signupPhoneDigits').querySelector('input').focus()}
+function openForgotModal(prefill=''){clearModal('forgotMessage');document.getElementById('forgotForm').reset();setPhone('forgotPhoneDigits',prefill);document.getElementById('recoveredPin').classList.remove('show');document.getElementById('resetFields').style.display='none';document.getElementById('retrievePinButton').style.display='inline-block';recoveredUser=null;document.getElementById('forgotModal').classList.add('show');if(!prefill)document.getElementById('forgotPhoneDigits').querySelector('input').focus()}
 function closeModal(id){document.getElementById(id).classList.remove('show')}
 function clearModal(id){const el=document.getElementById(id);el.textContent='';el.className='modal-message'}
 function showModalMessage(id,text,type='error'){const el=document.getElementById(id);el.textContent=text;el.className='modal-message show '+type}
@@ -106,10 +145,10 @@ function showModalMessage(id,text,type='error'){const el=document.getElementById
 async function handleSignup(event){
     event.preventDefault();
     const name=document.getElementById('signupName').value.trim();
-    const phone=normalizePhone(document.getElementById('signupPhone').value);
+    const phone=getPhone('signupPhoneDigits');
     const pin=document.getElementById('signupPin').value;
     const confirm=document.getElementById('signupPinConfirm').value;
-    if(!name||phone.length<7||!/^\d{4}$/.test(pin)||pin!==confirm){showModalMessage('signupMessage','Please enter valid details and matching 4-digit PINs.');return}
+    if(!name||phone.length!==10||!/^\d{4}$/.test(pin)||pin!==confirm){showModalMessage('signupMessage','Please enter a name, complete 10-digit phone number and matching 4-digit PINs.');return}
     const button=document.getElementById('signupButton');button.disabled=true;button.textContent='Creating...';
     const {data:existing,error:lookupError}=await findAdminByPhone(phone);
     if(lookupError){showModalMessage('signupMessage','Unable to check the phone number. Please try again.');button.disabled=false;button.textContent='Create Account';return}
@@ -118,15 +157,14 @@ async function handleSignup(event){
     if(error){console.error(error);showModalMessage('signupMessage',error.message||'Unable to create account.');button.disabled=false;button.textContent='Create Account';return}
     await logActivity('SIGNUP',{method:'phone_pin'},data.id);
     showModalMessage('signupMessage','Account created successfully. You can now log in.','success');
-    setTimeout(()=>{closeModal('signupModal');document.getElementById('loginPhone').value=phone;document.getElementById('loginPhone').focus()},900);
+    setTimeout(()=>{closeModal('signupModal');setPhone('loginPhoneDigits',phone);document.getElementById('loginPhoneDigits').querySelector('input').focus()},900);
     button.disabled=false;button.textContent='Create Account';
 }
-
 document.getElementById('signupForm').addEventListener('submit',handleSignup);
 
 async function retrievePin(){
-    const phone=normalizePhone(document.getElementById('forgotPhone').value);
-    if(phone.length<7){showModalMessage('forgotMessage','Please enter a valid phone number.');return}
+    const phone=getPhone('forgotPhoneDigits');
+    if(phone.length!==10){showModalMessage('forgotMessage','Please enter the complete 10-digit phone number.');return}
     const button=document.getElementById('retrievePinButton');button.disabled=true;button.textContent='Checking...';
     const {data,error}=await findAdminByPhone(phone);
     if(error){console.error(error);showModalMessage('forgotMessage','Unable to retrieve the account. Please try again.');button.disabled=false;button.textContent='Retrieve PIN';return}
@@ -153,11 +191,10 @@ async function changeRecoveredPin(){
     if(error){console.error(error);showModalMessage('forgotMessage','Unable to change PIN. Please try again.');button.disabled=false;button.textContent='Change PIN & Continue';return}
     await logActivity('PIN_CHANGED',{method:'forgot_pin'},recoveredUser.id);
     showModalMessage('forgotMessage','PIN changed successfully. Please log in with your new PIN.','success');
-    setTimeout(()=>{closeModal('forgotModal');document.getElementById('loginPhone').value=recoveredUser.phone;clearPin();document.getElementById('loginPhone').focus()},1000);
+    setTimeout(()=>{closeModal('forgotModal');setPhone('loginPhoneDigits',recoveredUser.phone);clearPin();document.getElementById('loginPhoneDigits').querySelector('input').focus()},1000);
     button.disabled=false;button.textContent='Change PIN & Continue';
 }
 
-['loginPhone','signupPhone','forgotPhone'].forEach(id=>onlyDigitsInput(id,15));
 ['signupPin','signupPinConfirm','newPin','newPinConfirm'].forEach(id=>onlyDigitsInput(id,4));
 </script>
 </body>
