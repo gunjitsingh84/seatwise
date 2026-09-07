@@ -254,4 +254,36 @@ async function initializeAcademicSessionUI() {
     document.head.appendChild(style);
 })();
 
+/* Keep the main navigation consistent across every SeatWise page. */
+(function initializeGlobalSidebar() {
+    function applySidebar() {
+        const nav = document.querySelector('.nav');
+        if (!nav) return;
+
+        const file = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+        const items = [
+            ['dashboard.html', '▦', 'Dashboard'],
+            ['students.html', '♙', 'Classes & Sections'],
+            ['rooms.html', '⌂', 'Rooms'],
+            ['subjects.html', '◈', 'Subjects'],
+            ['#', '◫', 'Exam Planner'],
+            ['#', '▤', 'Exams'],
+            ['#', '◧', 'Seating Plans'],
+            ['#', '◷', 'History']
+        ];
+
+        nav.innerHTML = '<div class="nav-label">Main Menu</div>' + items.map(([href, icon, label]) => {
+            const active = href !== '#' && href === file ? ' class="active"' : '';
+            const target = href === '#' ? ' href="#"' : ` href="${href}"`;
+            return `<a${target}${active}><span class="nav-icon">${icon}</span>${label}</a>`;
+        }).join('');
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applySidebar);
+    } else {
+        applySidebar();
+    }
+})();
+
 document.addEventListener('DOMContentLoaded', initializeAcademicSessionUI);
