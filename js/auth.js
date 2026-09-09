@@ -13,3 +13,43 @@ async function initializeAcademicSessionUI(){const h=document.querySelector('.sa
 (function(){function apply(){const nav=document.querySelector('.nav');if(!nav)return;const file=(location.pathname.split('/').pop()||'index.html').toLowerCase();const items=[['dashboard.html','▦','Dashboard'],['students.html','♙','Classes & Sections'],['rooms.html','⌂','Rooms'],['subjects.html','◈','Subjects'],['exam-planner.html','◫','Exam Planner'],['exams.html','▤','Exams'],['import-data.html','⇩','Import Data'],['#','◧','Seating Plans'],['#','◷','History']];nav.innerHTML='<div class="nav-label">Main Menu</div>'+items.map(x=>`<a href="${x[0]}"${x[0]!=='#'&&x[0]===file?' class="active"':''}><span class="nav-icon">${x[1]}</span>${x[2]}</a>`).join('')}document.readyState==='loading'?document.addEventListener('DOMContentLoaded',apply):apply()})();
 (function(){if(!document.querySelector('.saved-grid'))return;const s=document.createElement('style');s.textContent='.saved-grid{display:block!important}.saved-grid .class-card{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 18px!important;width:100%}.saved-grid .class-head{grid-column:1/-1;width:100%}.saved-grid .section-row{min-width:0;border-bottom:1px solid #eef1f5;border-right:1px solid #eef1f5}.saved-grid .section-row:nth-child(3n){border-right:0}@media(max-width:1100px){.saved-grid .class-card{grid-template-columns:repeat(2,minmax(0,1fr))}.saved-grid .section-row:nth-child(3n){border-right:1px solid #eef1f5}.saved-grid .section-row:nth-child(2n){border-right:0}}@media(max-width:650px){.saved-grid .class-card{grid-template-columns:1fr}.saved-grid .section-row{border-right:0}}';document.head.appendChild(s)})();
 document.addEventListener('DOMContentLoaded',initializeAcademicSessionUI);
+
+// Multi-school signup fix: create the school with a client-generated UUID and
+// insert without .select(), so RLS never requires a public SELECT policy on schools.
+document.addEventListener('submit',async function(e){
+  const form=e.target;
+  if(!form||form.id!=='signupForm')return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  const schoolName=(document.getElementById('signupSchoolName')?.value||'').trim();
+  const adminName=(document.getElementById('signupName')?.value||'').trim();
+  const phone=typeof getPhone==='function'?getPhone('signupPhoneDigits'):Array.from(document.querySelectorAll('#signupPhoneDigits input')).map(i=>i.value).join('');
+  const msg=document.getElementById('signupMessage');
+  const btn=document.getElementById('signupButton');
+  const show=(text,type='error')=>{if(msg){msg.textContent=text;msg.className='modal-message show '+type;}};
+  if(!schoolName){show('Please enter the school name.');return;}
+  if(!adminName){show('Please enter the administrator name.');return;}
+  if(!/^\d{10}$/.test(phone)){show('Please enter a valid 10-digit phone number.');return;}
+  try{
+    if(btn){btn.disabled=true;btn.textContent='Creating...';}
+    const existing=await seatwiseDb.from('admin_users').select('id').eq('phone',phone).maybeSingle();
+    if(existing.error)throw existing.error;
+    if(existing.data){show('This phone number is already registered. Please use another number.');return;}
+    const schoolId=crypto.randomUUID();
+    let schoolLogo=null;
+    if(typeof readLogoFile==='function')schoolLogo=await readLogoFile();
+    const schoolPayload={id:schoolId,school_name:schoolName,school_logo_url:schoolLogo};
+    const schoolResult=await seatwiseDb.from('schools').insert(schoolPayload);
+    if(schoolResult.error)throw schoolResult.error;
+    const adminResult=await seatwiseDb.from('admin_users').insert({name:adminName,phone,school_id:schoolId});
+    if(adminResult.error)throw adminResult.error;
+    setSeatwiseSession({id:null,name:adminName,phone,school_id:schoolId,school_name:schoolName,school_logo_url:schoolLogo});
+    show('Account created successfully. Opening SeatWise...','success');
+    setTimeout(()=>{location.href='dashboard.html'},500);
+  }catch(err){
+    console.error('School signup error:',err);
+    show(err?.message||'Unable to create the school account. Please try again.');
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='Create Account';}
+  }
+},true);
