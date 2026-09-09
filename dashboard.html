@@ -43,8 +43,10 @@ function toggleSidebar(){document.getElementById('sidebar').classList.toggle('op
 function logout(){clearSeatwiseSession();window.location.href='index.html'}
 function setStat(id,value){const el=document.getElementById(id);if(el)el.textContent=Number(value||0).toLocaleString('en-IN')}
 async function loadDashboardStats(){
+    const user=getSeatwiseSession();
+    if(!user?.school_id){console.error('Dashboard school scope missing: no school_id in session');return}
     const sessionName=getCurrentAcademicSession();
-    const {data,error}=await seatwiseDb.from('classes').select('student_count').eq('academic_session',sessionName);
+    const {data,error}=await seatwiseDb.from('classes').select('student_count').eq('school_id',user.school_id).eq('academic_session',sessionName);
     if(error){console.error('Dashboard class stats error:',error);return}
     const total=(data||[]).reduce((sum,row)=>sum+(Number(row.student_count)||0),0);
     setStat('totalStudents',total);
