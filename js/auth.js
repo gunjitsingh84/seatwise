@@ -14,8 +14,6 @@ async function initializeAcademicSessionUI(){const h=document.querySelector('.sa
 (function(){if(!document.querySelector('.saved-grid'))return;const s=document.createElement('style');s.textContent='.saved-grid{display:block!important}.saved-grid .class-card{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 18px!important;width:100%}.saved-grid .class-head{grid-column:1/-1;width:100%}.saved-grid .section-row{min-width:0;border-bottom:1px solid #eef1f5;border-right:1px solid #eef1f5}.saved-grid .section-row:nth-child(3n){border-right:0}@media(max-width:1100px){.saved-grid .class-card{grid-template-columns:repeat(2,minmax(0,1fr))}.saved-grid .section-row:nth-child(3n){border-right:1px solid #eef1f5}.saved-grid .section-row:nth-child(2n){border-right:0}}@media(max-width:650px){.saved-grid .class-card{grid-template-columns:1fr}.saved-grid .section-row{border-right:0}}';document.head.appendChild(s)})();
 document.addEventListener('DOMContentLoaded',initializeAcademicSessionUI);
 
-// Multi-school signup fix: create the school with a client-generated UUID and
-// insert without .select(), so RLS never requires a public SELECT policy on schools.
 document.addEventListener('submit',async function(e){
   const form=e.target;
   if(!form||form.id!=='signupForm')return;
@@ -54,8 +52,6 @@ document.addEventListener('submit',async function(e){
   }
 },true);
 
-// School-aware phone login. The RPC reads the admin + school record with
-// trusted database privileges so the browser does not need direct school SELECT access.
 async function securePhoneLogin(){
   const phone=typeof getPhone==='function'?getPhone('loginPhoneDigits'):'';
   if(phone.length!==10){alert('Please enter the complete 10-digit phone number.');return}
@@ -80,8 +76,6 @@ async function securePhoneLogin(){
   }
 }
 
-// The current login page has its own inline login handler. Capture the click/Enter
-// before that handler so the school-aware login is always used.
 document.addEventListener('click',function(e){
   if(e.target?.closest?.('#loginButton')){
     e.preventDefault();
@@ -96,3 +90,23 @@ document.addEventListener('keydown',function(e){
     securePhoneLogin();
   }
 },true);
+
+// Import Data tabs: honor ?type=rooms|subjects and ensure the tabs remain clickable.
+document.addEventListener('DOMContentLoaded',function(){
+  if(!location.pathname.toLowerCase().endsWith('import-data.html'))return;
+  const valid=['classes','rooms','subjects'];
+  const requested=new URLSearchParams(location.search).get('type');
+  const requestedType=valid.includes(requested)?requested:'classes';
+  const tabs=document.querySelectorAll('.tab[data-type]');
+  tabs.forEach(tab=>{
+    tab.disabled=false;
+    tab.removeAttribute('disabled');
+    tab.style.pointerEvents='auto';
+    tab.style.cursor='pointer';
+  });
+  if(typeof window.setType==='function')window.setType(requestedType);
+  tabs.forEach(tab=>tab.addEventListener('click',function(){
+    const next=tab.dataset.type;
+    if(valid.includes(next))history.replaceState(null,'',`import-data.html?type=${encodeURIComponent(next)}`);
+  },true));
+});
