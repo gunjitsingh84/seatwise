@@ -53,3 +53,46 @@ document.addEventListener('submit',async function(e){
     if(btn){btn.disabled=false;btn.textContent='Create Account';}
   }
 },true);
+
+// School-aware phone login. The RPC reads the admin + school record with
+// trusted database privileges so the browser does not need direct school SELECT access.
+async function securePhoneLogin(){
+  const phone=typeof getPhone==='function'?getPhone('loginPhoneDigits'):'';
+  if(phone.length!==10){alert('Please enter the complete 10-digit phone number.');return}
+  const btn=document.getElementById('loginButton');
+  if(btn)btn.disabled=true;
+  try{
+    const {data,error}=await seatwiseDb.rpc('login_admin_by_phone',{p_phone:phone});
+    if(error){console.error('Phone login RPC error:',error);alert('Unable to connect to the account database. Please try again.');return}
+    const user=Array.isArray(data)?data[0]:data;
+    if(!user){alert('No administrator account was found for this phone number.');document.getElementById('loginPhoneDigits')?.classList.add('shake');setTimeout(()=>document.getElementById('loginPhoneDigits')?.classList.remove('shake'),350);return}
+    if(user.is_active===false){alert('This school account is inactive. Please contact the administrator.');return}
+    if(!user.school_id){alert('This administrator is not associated with a school. Please contact the administrator.');return}
+    setSeatwiseSession({id:user.id,name:user.name,phone:user.phone,school_id:user.school_id,school_name:user.school_name,school_logo_url:user.school_logo_url});
+    sessionStorage.setItem('seatwiseAdmin','authenticated');
+    await logActivity('LOGIN_SUCCESS',{method:'phone'},user.id);
+    window.location.href='dashboard.html';
+  }catch(err){
+    console.error('Phone login error:',err);
+    alert(err?.message||'Unable to log in. Please try again.');
+  }finally{
+    if(btn)btn.disabled=false;
+  }
+}
+
+// The current login page has its own inline login handler. Capture the click/Enter
+// before that handler so the school-aware login is always used.
+document.addEventListener('click',function(e){
+  if(e.target?.closest?.('#loginButton')){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    securePhoneLogin();
+  }
+},true);
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter' && !e.target.matches?.('input,textarea') && !document.getElementById('signupModal')?.classList.contains('show')){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    securePhoneLogin();
+  }
+},true);
