@@ -7,7 +7,7 @@
   const file=()=>((location.pathname.split('/').pop()||'index.html').toLowerCase());
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function mount(){
-    if(!document.body||document.getElementById('seatwise-nav-v3'))return;
+    if(file()==='index.html'||!document.body||document.getElementById('seatwise-nav-v3'))return;
     document.querySelectorAll('.sidebar').forEach(el=>el.style.setProperty('display','none','important'));
     const host=document.createElement('div');host.id='seatwise-nav-v3';
     const root=host.attachShadow({mode:'open'});document.body.prepend(host);
