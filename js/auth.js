@@ -16,12 +16,10 @@ async function initializeAcademicSessionUI(){const h=document.querySelector('.sa
 (function(){if(!document.querySelector('.saved-grid'))return;const s=document.createElement('style');s.textContent='.saved-grid{display:block!important}.saved-grid .class-card{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 18px!important;width:100%}.saved-grid .class-head{grid-column:1/-1;width:100%}.saved-grid .section-row{min-width:0;border-bottom:1px solid #eef1f5;border-right:1px solid #eef1f5}.saved-grid .section-row:nth-child(3n){border-right:0}@media(max-width:1100px){.saved-grid .class-card{grid-template-columns:repeat(2,minmax(0,1fr))}.saved-grid .section-row:nth-child(3n){border-right:1px solid #eef1f5}.saved-grid .section-row:nth-child(2n){border-right:0}}@media(max-width:650px){.saved-grid .class-card{grid-template-columns:1fr}.saved-grid .section-row{border-right:0}}';document.head.appendChild(s)})();
 (function(){
   function loadSharedNavigation(){
-    if(!document.querySelector('.nav')||window.__seatwiseNavigationLoading||window.__seatwiseNavigationLoaded)return;
-    window.__seatwiseNavigationLoading=true;
+    if(window.__seatwiseNavV3Loader||window.__seatwiseNavV3)return;
     const script=document.createElement('script');
-    script.src='js/navigation.js?v=20260912';
-    script.onload=()=>{window.__seatwiseNavigationLoaded=true;window.__seatwiseNavigationLoading=false};
-    script.onerror=()=>{window.__seatwiseNavigationLoading=false;console.error('SeatWise navigation failed to load')};
+    script.id='seatwise-navigation-v3-script';
+    script.src='js/navigation-v3.js?v=20260913';
     document.head.appendChild(script);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadSharedNavigation,{once:true});else loadSharedNavigation();
