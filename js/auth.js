@@ -15,14 +15,17 @@ async function ensureCurrentAcademicSession(){const n=getCurrentAcademicSession(
 async function initializeAcademicSessionUI(){const h=document.querySelector('.saved-head');if(!h)return;const d=h.querySelector('p');if(d)d.textContent=`Current Session: ${await ensureCurrentAcademicSession()}`}
 (function(){if(!document.querySelector('.saved-grid'))return;const s=document.createElement('style');s.textContent='.saved-grid{display:block!important}.saved-grid .class-card{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 18px!important;width:100%}.saved-grid .class-head{grid-column:1/-1;width:100%}.saved-grid .section-row{min-width:0;border-bottom:1px solid #eef1f5;border-right:1px solid #eef1f5}.saved-grid .section-row:nth-child(3n){border-right:0}@media(max-width:1100px){.saved-grid .class-card{grid-template-columns:repeat(2,minmax(0,1fr))}.saved-grid .section-row:nth-child(3n){border-right:1px solid #eef1f5}.saved-grid .section-row:nth-child(2n){border-right:0}}@media(max-width:650px){.saved-grid .class-card{grid-template-columns:1fr}.saved-grid .section-row{border-right:0}}';document.head.appendChild(s)})();
 (function(){
-  function loadSharedNavigation(){
+  function startFreshNavigation(){
     if(window.__seatwiseNavV3Loader||window.__seatwiseNavV3)return;
-    const script=document.createElement('script');
-    script.id='seatwise-navigation-v3-script';
-    script.src='js/navigation-v3.js?v=20260913';
+    const style=document.createElement('style');style.id='seatwise-nav-v3-hide-legacy';style.textContent='.sidebar[data-seatwise-legacy-sidebar],.sidebar{display:none!important}';document.head.appendChild(style);
+    document.querySelectorAll('.sidebar').forEach(el=>el.setAttribute('data-seatwise-legacy-sidebar','true'));
+    window.__seatwiseNavV3Loader=true;
+    const script=document.createElement('script');script.id='seatwise-navigation-v3-script';script.src='js/navigation-v3.js?v=20260913';
+    script.onload=()=>{window.__seatwiseNavV3Loader=false};
+    script.onerror=()=>{window.__seatwiseNavV3Loader=false;console.error('SeatWise navigation v3 failed to load')};
     document.head.appendChild(script);
   }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadSharedNavigation,{once:true});else loadSharedNavigation();
+  startFreshNavigation();
 })();
 document.addEventListener('DOMContentLoaded',initializeAcademicSessionUI);
 document.addEventListener('submit',async function(e){const form=e.target;if(!form||form.id!=='signupForm')return;e.preventDefault();e.stopImmediatePropagation();const schoolName=(document.getElementById('signupSchoolName')?.value||'').trim();const adminName=(document.getElementById('signupName')?.value||'').trim();const phone=typeof getPhone==='function'?getPhone('signupPhoneDigits'):Array.from(document.querySelectorAll('#signupPhoneDigits input')).map(i=>i.value).join('');const msg=document.getElementById('signupMessage');const btn=document.getElementById('signupButton');const show=(text,type='error')=>{if(msg){msg.textContent=text;msg.className='modal-message show '+type}};if(!schoolName){show('Please enter the school name.');return}if(!adminName){show('Please enter the administrator name.');return}if(!/^\d{10}$/.test(phone)){show('Please enter a valid 10-digit phone number.');return}try{if(btn){btn.disabled=true;btn.textContent='Creating...'}const existing=await seatwiseDb.from('admin_users').select('id').eq('phone',phone).maybeSingle();if(existing.error)throw existing.error;if(existing.data){show('This phone number is already registered. Please use another number.');return}const schoolId=crypto.randomUUID();let schoolLogo=null;if(typeof readLogoFile==='function')schoolLogo=await readLogoFile();const schoolResult=await seatwiseDb.from('schools').insert({id:schoolId,school_name:schoolName,school_logo_url:schoolLogo});if(schoolResult.error)throw schoolResult.error;const adminResult=await seatwiseDb.from('admin_users').insert({name:adminName,phone,school_id:schoolId});if(adminResult.error)throw adminResult.error;setSeatwiseSession({id:null,name:adminName,phone,school_id:schoolId,school_name:schoolName,school_logo_url:schoolLogo});show('Account created successfully. Opening SeatWise...','success');setTimeout(()=>location.href='dashboard.html',500)}catch(err){console.error('School signup error:',err);show(err?.message||'Unable to create the school account. Please try again.')}finally{if(btn){btn.disabled=false;btn.textContent='Create Account'}}},true);
