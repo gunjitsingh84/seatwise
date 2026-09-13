@@ -7,9 +7,7 @@
       this.settingsOpen=false;
     }
 
-    connectedCallback(){
-      this.render();
-    }
+    connectedCallback(){ this.render(); }
 
     icon(name){
       const paths={
@@ -48,19 +46,19 @@
           .section-title{height:18px;margin:0 13px 13px;color:rgba(255,255,255,.57);font-size:10px;line-height:18px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase}
           .item,.settings{width:100%;height:48px;min-height:48px;margin:0 0 5px;padding:0 14px;border:0;border-radius:11px;display:flex;align-items:center;gap:13px;background:transparent;color:rgba(255,255,255,.94);text-decoration:none;font-size:15px;font-weight:500;line-height:1;white-space:nowrap;cursor:pointer;appearance:none;outline:none}
           .item:hover,.settings:hover{background:rgba(255,255,255,.08)}.item.active{background:#fff;color:#1f5fbf;font-weight:750}
-          .icon{width:21px;height:21px;flex:0 0 21px;display:grid;place-items:center}.icon svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round}
+          .icon{width:21px;height:21px;flex:0 0 21px;display:grid;place-items:center}.icon svg{width:16px;height:16px;display:block;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round}
           .settings .chevron{margin-left:auto;width:18px;height:18px;display:grid;place-items:center;font-size:14px}.settings.open .chevron{transform:rotate(180deg)}
           .submenu{display:none;padding:0 0 5px}.submenu.open{display:block}.submenu .item{height:43px;min-height:43px;padding-left:48px;margin-bottom:3px;font-size:14px}.submenu .icon{width:18px;flex-basis:18px}.submenu .icon svg{width:15px;height:15px}
           footer{height:84px;min-height:84px;padding:0 18px;display:flex;align-items:center;gap:11px;border-top:1px solid rgba(255,255,255,.14);background:rgba(8,48,112,.14)}
           .avatar{width:42px;height:42px;min-width:42px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#2365c4;font-size:13px;font-weight:850}.profile{min-width:0;flex:1}.name,.school{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.name{font-size:14px;font-weight:750;line-height:20px}.school{margin-top:2px;color:rgba(255,255,255,.66);font-size:11px;line-height:17px}
-          .logout{width:34px;height:34px;min-width:34px;padding:0;border:0;border-radius:8px;background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer}.logout svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.logout:hover{background:rgba(255,255,255,.08)}
+          .logout{width:34px;height:34px;min-width:34px;padding:0;border:0;border-radius:8px;background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer}.logout svg{width:20px;height:20px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.logout:hover{background:rgba(255,255,255,.08)}
           @media(max-width:700px){:host{position:absolute;width:100%;height:100dvh}.sidebar{width:272px}}
         </style>
         <aside class="sidebar">
           <div class="brand"><div class="brand-mark">▦</div><div class="brand-name">Seat<span>Wise</span></div></div>
           <nav><div class="section-title">Main Menu</div>
             ${main.map(x=>this.item(x[0],x[1],x[2],false)).join('')}
-            <button class="settings ${this.settingsOpen?'open':''}" type="button" aria-expanded="${this.settingsOpen}">${this.icon('settings')}<span>Settings</span><span class="chevron">⌄</span></button>
+            <button class="settings ${this.settingsOpen?'open':''}" type="button" aria-expanded="${this.settingsOpen}"><span class="icon">${this.icon('settings')}</span><span>Settings</span><span class="chevron">⌄</span></button>
             <div class="submenu ${this.settingsOpen?'open':''}">${sub.map(x=>this.item(x[0],x[1],x[2],true)).join('')}</div>
           </nav>
           <footer><div class="avatar">GS</div><div class="profile"><span class="name">Gunjit Singh</span><span class="school">Chitkara</span></div><button class="logout" aria-label="Sign out"><svg viewBox="0 0 20 20"><path d="M8 3H4.5A1.5 1.5 0 0 0 3 4.5v11A1.5 1.5 0 0 0 4.5 17H8M11 6l4 4-4 4M15 10H7"/></svg></button></footer>
@@ -68,7 +66,9 @@
       this.bind();
     }
 
-    item(key,label,icon,sub){return `<a href="#${key}" class="item ${this.active===key?'active':''}" data-key="${key}" data-sub="${sub?'1':'0'}">${this.icon(icon)}<span>${label}</span></a>`}
+    item(key,label,icon,sub){
+      return `<a href="#${key}" class="item ${this.active===key?'active':''}" data-key="${key}" data-sub="${sub?'1':'0'}"><span class="icon">${this.icon(icon)}</span><span>${label}</span></a>`;
+    }
 
     bind(){
       const root=this.shadowRoot;
