@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SeatWise | Dashboard</title>
+<style>
+*{box-sizing:border-box} :root{--blue:#1f5fbf;--navy:#174c9e;--bg:#f4f7fb;--text:#1e293b;--muted:#667085;--line:#e4eaf2;--soft:#eef5ff;--green:#25a66a;--orange:#f59e0b;--red:#e85b4f}
+html,body{margin:0;min-height:100%;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}body{padding-left:272px}.main{min-height:100vh}.topbar{height:92px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 40px}.title h1{margin:0;font-size:25px;font-weight:800}.title p{margin:5px 0 0;font-size:13px;color:var(--muted)}.header-avatar{width:42px;height:42px;border-radius:50%;background:#e6efff;color:var(--blue);display:grid;place-items:center;font-weight:800}.content{padding:34px 40px 45px;max-width:1700px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:26px}.stat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:22px;min-height:108px;display:flex;align-items:center;justify-content:space-between}.stat-label{font-size:13px;color:var(--muted);margin-bottom:8px}.stat-value{font-size:29px;font-weight:800}.stat-icon{width:52px;height:52px;border-radius:13px;display:grid;place-items:center;font-size:21px}.blue-bg{background:#eaf2ff;color:var(--blue)}.green-bg{background:#eaf9f1;color:var(--green)}.orange-bg{background:#fff5e6;color:var(--orange)}.red-bg{background:#fff0ef;color:var(--red)}.grid{display:grid;grid-template-columns:1.7fr 1fr;gap:24px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}.card-head{padding:21px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px}.card-head h3{margin:0;font-size:17px}.link{color:var(--blue);text-decoration:none;font-size:13px;font-weight:700}.exam-list{padding:8px 24px 18px}.exam{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;border-bottom:1px solid #eef1f5}.exam:last-child{border-bottom:0}.exam-left{display:flex;align-items:center;gap:15px}.exam-date{width:54px;height:54px;border-radius:12px;background:var(--soft);color:var(--blue);display:flex;flex-direction:column;align-items:center;justify-content:center}.exam-date strong{font-size:18px}.exam-date span{font-size:10px;text-transform:uppercase;font-weight:700}.exam-info strong{display:block;font-size:15px;margin-bottom:5px}.exam-info span{font-size:12px;color:var(--muted)}.status{padding:7px 11px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}.ready{color:#14804a;background:#e8f7ee}.pending{color:#a86500;background:#fff4dd}.summary{padding:24px}.plan-box{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0 20px}.plan-stat{border:1px solid var(--line);border-radius:12px;padding:17px;text-align:center}.plan-stat strong{display:block;font-size:28px}.plan-stat span{display:block;margin-top:5px;font-size:12px;color:var(--muted)}.created{color:#14804a;background:#f1fbf5}.pending-box{color:#a86500;background:#fffaf0}.summary-note{font-size:12px;color:var(--muted);line-height:1.5;margin:0}.bottom{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}.util{padding:24px}.empty{padding:32px 24px;text-align:center;color:var(--muted);font-size:13px}.progress-item{margin-bottom:20px}.progress-top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}.progress-top span{color:var(--muted)}.bar{height:8px;background:#edf1f6;border-radius:10px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#2c70d4,#1d56b4);border-radius:10px}.activity{padding:8px 24px 20px}.activity-item{display:flex;gap:13px;padding:15px 0;border-bottom:1px solid #eef1f5}.activity-item:last-child{border-bottom:0}.activity-icon{width:36px;height:36px;min-width:36px;border-radius:10px;background:var(--soft);color:var(--blue);display:grid;place-items:center}.activity-text strong{display:block;font-size:13px;margin-bottom:4px}.activity-text span{font-size:12px;color:var(--muted)}.footer{text-align:center;color:var(--muted);font-size:12px;padding:28px 0 3px}@media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr)}.grid,.bottom{grid-template-columns:1fr}}@media(max-width:700px){body{padding-left:0}.topbar{padding:0 18px}.content{padding:24px 18px}.stats{grid-template-columns:1fr}.header-avatar{display:none}.exam{align-items:flex-start;flex-direction:column}.exam-left{width:100%}}
+</style>
+</head>
+<body>
+<seatwise-navigation data-active="dashboard"></seatwise-navigation>
+<main class="main"><header class="topbar"><div class="title"><h1>Dashboard</h1><p>Welcome back. Here's your examination overview.</p></div><div class="header-avatar" id="headerAvatar">A</div></header>
+<section class="content">
+<section class="stats">
+<div class="stat"><div><div class="stat-label">Total Students</div><div class="stat-value" id="totalStudents">0</div></div><div class="stat-icon blue-bg">♙</div></div>
+<div class="stat"><div><div class="stat-label">Classrooms</div><div class="stat-value" id="classroomCount">0</div></div><div class="stat-icon green-bg">⌂</div></div>
+<div class="stat"><div><div class="stat-label">Upcoming Exams</div><div class="stat-value" id="upcomingExams">0</div></div><div class="stat-icon orange-bg">◫</div></div>
+<div class="stat"><div><div class="stat-label">Seating Plans</div><div class="stat-value" id="seatingPlansValue">0 / 0</div></div><div class="stat-icon red-bg">▤</div></div>
+</section>
+<section class="grid">
+<article class="card"><div class="card-head"><h3>Upcoming Examinations</h3><a class="link" href="exams.html">View All →</a></div><div id="upcomingExamList" class="exam-list"><div class="empty">Loading upcoming exams...</div></div></article>
+<article class="card"><div class="card-head"><h3>Seating Plans</h3><a class="link" href="exam-planner.html">Details →</a></div><div class="summary"><div class="plan-box"><div class="plan-stat created"><strong id="plansCreated">0</strong><span>Plans Created</span></div><div class="plan-stat pending-box"><strong id="plansPending">0</strong><span>Plans Pending</span></div></div><p class="summary-note">Only exams scheduled for today or a future date are included. A plan is counted as created when a seating-plan record exists for that exam.</p></div></article>
+</section>
+<section class="bottom">
+<article class="card"><div class="card-head"><h3>Classroom Utilization</h3><a class="link" href="rooms.html">View Rooms →</a></div><div class="util"><div class="empty">Room utilization will appear here once seating capacity is linked to the room data.</div></div></article>
+<article class="card"><div class="card-head"><h3>Recent Activity</h3><a class="link" href="history.html">View History →</a></div><div class="activity"><div class="empty">Recent activity will appear here as dashboard events are recorded.</div></div></article>
+</section>
+<div class="footer">© 2026 SeatWise. All rights reserved.</div>
+</section></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/auth.js"></script>
+<script src="js/navigation-component.js"></script>
+<script>
+const user=requireSeatwiseLogin();
+if(user){
+ const session=getCurrentAcademicSession();
+ const initial=(()=>{const p=(user.name||'Administrator').trim().split(/\s+/).filter(Boolean);return (p.length>1?p[0][0]+p[p.length-1][0]:(p[0]?.[0]||'A')).toUpperCase()})();
+ document.getElementById('headerAvatar').textContent=initial;
+ const routes={dashboard:'dashboard-v2.html',classes:'students.html',rooms:'rooms.html',subjects:'subjects.html',planner:'exam-planner.html',exams:'exams.html',users:'user-management.html',history:'history.html'};
+ document.querySelector('seatwise-navigation').addEventListener('seatwise:navigate',e=>{const url=routes[e.detail.key];if(url&&e.detail.key!=='dashboard')location.href=url;});
+ document.querySelector('seatwise-navigation').addEventListener('seatwise:logout',()=>{clearSeatwiseSession();location.replace('index.html')});
+ const today=new Date().toISOString().slice(0,10);
+ const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=Number(v||0).toLocaleString('en-IN')};
+ async function load(){
+   const [classesRes, examsRes]=await Promise.all([
+     seatwiseDb.from('classes').select('student_count').eq('school_id',user.school_id).eq('academic_session',session),
+     seatwiseDb.from('exams').select('id,class_number,subject_name,exam_date,status').eq('academic_session',session).gte('exam_date',today).order('exam_date',{ascending:true})
+   ]);
+   if(classesRes.error){console.error('Dashboard classes:',classesRes.error);return}
+   const rows=classesRes.data||[];set('classroomCount',rows.length);const students=rows.reduce((s,r)=>s+(Number(r.student_count)||0),0);set('totalStudents',students);
+   if(examsRes.error){console.error('Dashboard exams:',examsRes.error);document.getElementById('upcomingExamList').innerHTML='<div class="empty">Unable to load upcoming exams.</div>';return}
+   const exams=examsRes.data||[];set('upcomingExams',exams.length);renderExams(exams);await loadSeatingPlans(exams);
+ }
+ function renderExams(exams){const el=document.getElementById('upcomingExamList');if(!exams.length){el.innerHTML='<div class="empty">No current or future exams.</div>';return}el.innerHTML=exams.slice(0,6).map(x=>{const d=new Date(x.exam_date+'T00:00:00');const day=String(d.getDate()).padStart(2,'0'),mon=d.toLocaleDateString('en-US',{month:'short'});const status=x.status==='cancelled'?'pending':'ready';return `<div class="exam"><div class="exam-left"><div class="exam-date"><strong>${day}</strong><span>${mon}</span></div><div class="exam-info"><strong>${escapeHtml(x.subject_name||'Examination')} – Class ${escapeHtml(x.class_number)}</strong><span>${d.toLocaleDateString('en-US',{weekday:'long'})} · ${escapeHtml(x.status||'scheduled')}</span></div></div><span class="status ${status}">${x.status==='cancelled'?'Cancelled':'Scheduled'}</span></div>`}).join('')}
+ async function loadSeatingPlans(exams){
+   const ids=exams.map(x=>x.id);if(!ids.length){set('plansCreated',0);set('plansPending',0);document.getElementById('seatingPlansValue').textContent='0 / 0';return}
+   const res=await seatwiseDb.from('seating_plans').select('exam_id').in('exam_id',ids);
+   if(res.error){console.warn('Seating plans table not available yet:',res.error);set('plansCreated',0);set('plansPending',ids.length);document.getElementById('seatingPlansValue').textContent=`0 / ${ids.length}`;return}
+   const createdIds=new Set((res.data||[]).map(x=>x.exam_id));const created=createdIds.size,pending=Math.max(0,ids.length-created);set('plansCreated',created);set('plansPending',pending);document.getElementById('seatingPlansValue').textContent=`${created} / ${ids.length}`;
+ }
+ function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+ load();
+}
+</script>
+</body></html>
