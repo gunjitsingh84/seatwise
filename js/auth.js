@@ -14,15 +14,15 @@ function getCurrentAcademicSession(date=new Date()){const y=date.getFullYear(),m
 async function ensureCurrentAcademicSession(){const n=getCurrentAcademicSession(),y=+n.slice(0,4);const{error}=await seatwiseDb.from('academic_sessions').upsert({session_name:n,start_date:`${y}-04-01`,end_date:`${y+1}-03-31`},{onConflict:'session_name'});if(error)console.error('Academic session error:',error);return n}
 async function initializeAcademicSessionUI(){const h=document.querySelector('.saved-head');if(!h)return;const d=h.querySelector('p');if(d)d.textContent=`Current Session: ${await ensureCurrentAcademicSession()}`}
 (function(){if(!document.querySelector('.saved-grid'))return;const s=document.createElement('style');s.textContent='.saved-grid{display:block!important}.saved-grid .class-card{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 18px!important;width:100%}.saved-grid .class-head{grid-column:1/-1;width:100%}.saved-grid .section-row{min-width:0;border-bottom:1px solid #eef1f5;border-right:1px solid #eef1f5}.saved-grid .section-row:nth-child(3n){border-right:0}@media(max-width:1100px){.saved-grid .class-card{grid-template-columns:repeat(2,minmax(0,1fr))}.saved-grid .section-row:nth-child(3n){border-right:1px solid #eef1f5}.saved-grid .section-row:nth-child(2n){border-right:0}}@media(max-width:650px){.saved-grid .class-card{grid-template-columns:1fr}.saved-grid .section-row{border-right:0}}';document.head.appendChild(s)})();
-/* Load the single shared navigation. Do not hide the legacy sidebar before the new component has rendered. */
+/* Load the single shared navigation on every authenticated page. Never hide the legacy navigation while loading. */
 (function(){
   const file=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-  if(file==='index.html'||window.__seatwiseNavLoader||window.__seatwiseNavComponent)return;
-  window.__seatwiseNavLoader=true;
+  if(file==='index.html'||window.__seatwiseAuthNavLoader||window.__seatwiseNavComponent)return;
+  window.__seatwiseAuthNavLoader=true;
   const script=document.createElement('script');
   script.src='js/navigation.js?v=20260914';
-  script.onload=()=>{window.__seatwiseNavLoader=false};
-  script.onerror=()=>{window.__seatwiseNavLoader=false;console.error('SeatWise navigation failed to load')};
+  script.onload=()=>{window.__seatwiseAuthNavLoader=false};
+  script.onerror=()=>{window.__seatwiseAuthNavLoader=false;console.error('SeatWise navigation failed to load')};
   document.head.appendChild(script);
 })();
 document.addEventListener('DOMContentLoaded',initializeAcademicSessionUI);
