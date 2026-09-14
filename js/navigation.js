@@ -13,7 +13,6 @@
     'settings.html':'settings','user-management.html':'users'
   };
   const active=routes[page]||'dashboard';
-
   const icons={
     dashboard:'<rect x="3" y="3" width="5" height="5"/><rect x="10" y="3" width="5" height="5"/><rect x="3" y="10" width="5" height="5"/><rect x="10" y="10" width="5" height="5"/>',
     classes:'<path d="M3 5h3l2-2h4l2 2h1v8H3z"/><path d="M6 8h6"/>',
@@ -38,8 +37,6 @@
 
   function mount(){
     if(!document.body||document.querySelector('[data-seatwise-shared-nav]'))return;
-    const old=document.querySelectorAll('.sidebar');
-    const legacyNav=document.querySelectorAll('.sidebar .nav');
     const host=document.createElement('aside');
     host.setAttribute('data-seatwise-shared-nav','true');
     host.innerHTML=`<style>
@@ -59,8 +56,10 @@
       @media(max-width:700px){.sw-sidebar{width:240px}}
     </style><div class="sw-sidebar"><div class="sw-brand"><div class="sw-mark">▦</div><div class="sw-brand-name">Seat<span>Wise</span></div></div><nav class="sw-nav">${main.map(item).join('')}<button class="sw-settings ${['settings','users','history'].includes(active)?'open':''}" type="button" aria-expanded="${['settings','users','history'].includes(active)}"><span class="sw-icon">${icon('settings')}</span><span>Settings</span><span class="chevron">⌄</span></button><div class="sw-submenu ${['settings','users','history'].includes(active)?'open':''}">${sub.map(item).join('')}</div></nav><footer class="sw-footer"><div class="sw-avatar">${esc(initials)}</div><div class="sw-profile"><span class="sw-name">${esc(name)}</span><span class="sw-school">${esc(school)}</span></div><button class="sw-logout" type="button" aria-label="Sign out"><svg viewBox="0 0 20 20"><path d="M8 3H4.5A1.5 1.5 0 0 0 3 4.5v11A1.5 1.5 0 0 0 4.5 17H8M11 6l4 4-4 4M15 10H7"/></svg></button></footer></div>`;
     document.body.prepend(host);
-    old.forEach(el=>el.style.setProperty('display','none','important'));
-    legacyNav.forEach(el=>el.style.setProperty('visibility','hidden','important'));
+    const layout=document.createElement('style');
+    layout.id='seatwise-navigation-layout';
+    layout.textContent='body{padding-left:272px!important} .main{margin-left:0!important} @media(max-width:700px){body{padding-left:240px!important}.main{margin-left:0!important}}';
+    document.head.appendChild(layout);
     host.querySelector('.sw-settings').addEventListener('click',()=>host.querySelector('.sw-submenu').classList.toggle('open'));
     host.querySelector('.sw-logout').addEventListener('click',()=>{if(typeof clearSeatwiseSession==='function')clearSeatwiseSession();location.replace('index.html')});
   }
