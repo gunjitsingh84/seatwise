@@ -14,7 +14,7 @@
 
   const today=new Date().toISOString().slice(0,10);
   const session=getCurrentAcademicSession();
-  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=Number(v||0).toLocaleString('en-IN');};
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=typeof v==='number'?v.toLocaleString('en-IN'):String(v??'0');};
   const showError=t=>{document.getElementById('examList').innerHTML='<div class="empty">'+escapeHtml(t)+'</div>';};
 
   async function load(){
