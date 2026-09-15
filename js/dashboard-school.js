@@ -2,17 +2,13 @@
   const user = requireSeatwiseLogin();
   if (!user) return;
 
-  const nav = document.querySelector('seatwise-navigation');
-  const routes = {dashboard:'dashboard.html',classes:'students.html',rooms:'rooms.html',subjects:'subjects.html',planner:'exam-planner.html',exams:'exams.html',users:'user-management.html',history:'history.html'};
-  nav?.addEventListener('seatwise:navigate', e => { const url=routes[e.detail.key]; if(url && e.detail.key!=='dashboard') location.href=url; });
-  nav?.addEventListener('seatwise:logout', () => { clearSeatwiseSession(); location.replace('index.html'); });
-
   const name=(user.name||'Administrator').trim();
   const parts=name.split(/\s+/).filter(Boolean);
   document.getElementById('avatar').textContent=(parts.length>1?parts[0][0]+parts[parts.length-1][0]:parts[0]?.[0]||'A').toUpperCase();
   document.getElementById('welcome').innerHTML='Overview for <strong>'+escapeHtml(user.school_name||'Current School')+'</strong>';
 
-  const today=new Date().toISOString().slice(0,10);
+  const now=new Date();
+  const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');
   const session=getCurrentAcademicSession();
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=typeof v==='number'?v.toLocaleString('en-IN'):String(v??'0');};
   const showError=t=>{document.getElementById('examList').innerHTML='<div class="empty">'+escapeHtml(t)+'</div>';};
@@ -20,15 +16,12 @@
   async function load(){
     if(!user.school_id){showError('School scope is missing from this session. Please sign in again.');return;}
 
-    // Classes/students: current school + current academic session only.
     const classesRes=await seatwiseDb.from('classes').select('student_count').eq('school_id',user.school_id).eq('academic_session',session);
     if(classesRes.error){console.error(classesRes.error);showError('Unable to load school class data.');return;}
     const classRows=classesRes.data||[];
     set('classes',classRows.length);
     set('students',classRows.reduce((sum,row)=>sum+(Number(row.student_count)||0),0));
 
-    // Exam ownership is resolved through admins belonging to this school.
-    // This avoids depending on a nullable school_id on older exam records.
     const adminsRes=await seatwiseDb.from('admin_users').select('id').eq('school_id',user.school_id);
     if(adminsRes.error){console.error(adminsRes.error);showError('Unable to resolve school examination ownership.');return;}
     const adminIds=(adminsRes.data||[]).map(a=>a.id).filter(Boolean);
@@ -45,8 +38,6 @@
     set('upcoming',exams.length);
     renderExams(exams);
 
-    // Created = every seating plan belonging to this school's exams, past or future.
-    // Pending = only current/future exams that do not have a seating plan.
     const allExamIdsRes=await seatwiseDb.from('exams').select('id').in('planner_id',plannerIds);
     if(allExamIdsRes.error){console.error(allExamIdsRes.error);showError('Unable to calculate seating plan totals.');return;}
     const allExamIds=(allExamIdsRes.data||[]).map(x=>x.id).filter(Boolean);
