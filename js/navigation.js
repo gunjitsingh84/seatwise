@@ -12,7 +12,11 @@
     'exam-planner.html':'planner','exams.html':'exams','history.html':'history',
     'settings.html':'settings','user-management.html':'users'
   };
-  const active=routes[page]||'dashboard';
+  let active=routes[page]||'dashboard';
+  if(page==='import-data.html'){
+    const type=new URLSearchParams(location.search).get('type');
+    active=type==='rooms'?'rooms':type==='subjects'?'subjects':'classes';
+  }
   const icons={
     dashboard:'<rect x="3" y="3" width="5" height="5"/><rect x="10" y="3" width="5" height="5"/><rect x="3" y="10" width="5" height="5"/><rect x="10" y="10" width="5" height="5"/>',
     classes:'<path d="M3 5h3l2-2h4l2 2h1v8H3z"/><path d="M6 8h6"/>',
