@@ -31,21 +31,12 @@ body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}a
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/auth.js"></script>
 <script>
-const db=seatwiseDb;
-const currentUser=requireSeatwiseLogin();
-const schoolId=currentUser?.school_id||null;
-const currentSession=getCurrentAcademicSession();
-let records=[],pendingDeleteId=null;
+let db=null,currentUser=null,schoolId=null,currentSession=null,records=[],pendingDeleteId=null;
 const classSelect=document.getElementById('classNumber');
 const sectionSelect=document.getElementById('sectionCount');
 const sectionTableWrap=document.getElementById('sectionTableWrap');
 const savedClasses=document.getElementById('savedClasses');
 const message=document.getElementById('message');
-
-for(let i=1;i<=12;i++){
-  classSelect.insertAdjacentHTML('beforeend',`<option value="${i}">Class ${i}</option>`);
-  sectionSelect.insertAdjacentHTML('beforeend',`<option value="${i}">${i}</option>`);
-}
 classSelect.addEventListener('change',buildFields);
 sectionSelect.addEventListener('change',buildFields);
 
@@ -165,9 +156,11 @@ function showMessage(text,type){message.textContent=text;message.className=`mess
 function escapeHtml(value){return String(value??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 function logout(){clearSeatwiseSession();window.location.href='index.html'}
 (function(){
-  const user=currentUser;
-  if(!user)return;
-  const name=(user.name||'Administrator').trim()||'Administrator';
+  currentUser=typeof window.getSeatwiseSession==='function'?window.getSeatwiseSession():null;
+  db=window.seatwiseDb||null;
+  schoolId=currentUser?.school_id||null;
+  currentSession=typeof window.getCurrentAcademicSession==='function'?window.getCurrentAcademicSession():(new Date().getFullYear())+'-'+(new Date().getFullYear()+1);
+  const name=(currentUser?.name||'Administrator').trim()||'Administrator';
   const parts=name.split(/\s+/).filter(Boolean);
   const initials=(parts.length>1?parts[0][0]+parts[parts.length-1][0]:name.charAt(0)).toUpperCase();
   const adminAvatar=document.getElementById('adminAvatar');
@@ -176,7 +169,7 @@ function logout(){clearSeatwiseSession();window.location.href='index.html'}
   if(adminName)adminName.textContent=name;
   const headerAvatar=document.getElementById('headerAvatar');
   if(headerAvatar)headerAvatar.textContent=initials;
-  loadRecords();
+  if(db&&schoolId)loadRecords();
 })();
 document.getElementById('deleteModal').addEventListener('click',e=>{if(e.target.id==='deleteModal')closeDeleteModal()});
 </script>>
