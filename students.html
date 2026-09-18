@@ -34,20 +34,17 @@ body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}a
 (function(){
 'use strict';
 function init(){
- const db=window.seatwiseDb, login=window.requireSeatwiseLogin, academic=window.getCurrentAcademicSession, activity=window.logActivity;
- const user=typeof login==='function'?login():null;
- if(!user||!db||!user.school_id)return;
- const schoolId=user.school_id;
+ const db=window.seatwiseDb||null, academic=window.getCurrentAcademicSession, activity=window.logActivity;
+ const user=typeof window.getSeatwiseSession==='function'?window.getSeatwiseSession():null;
+ const schoolId=user?.school_id||null;
  const currentSession=typeof academic==='function'?academic():(new Date().getFullYear())+'-'+(new Date().getFullYear()+1);
  const classSelect=document.getElementById('classNumber'), sectionSelect=document.getElementById('sectionCount'), wrap=document.getElementById('sectionTableWrap'), saved=document.getElementById('savedClasses'), message=document.getElementById('message'), modal=document.getElementById('deleteModal');
  let records=[],pendingDeleteId=null;
- const name=(user.name||'Administrator').trim()||'Administrator', parts=name.split(/\s+/).filter(Boolean);
+ const name=(user?.name||'Administrator').trim()||'Administrator', parts=name.split(/\s+/).filter(Boolean);
  document.getElementById('headerAvatar').textContent=(parts.length>1?parts[0][0]+parts[parts.length-1][0]:parts[0][0]).toUpperCase();
- if(user.school_name)document.getElementById('schoolContext').textContent=user.school_name+' • '+currentSession;
- for(let i=1;i<=12;i++){
-   const c=document.createElement('option');c.value=String(i);c.textContent='Class '+i;classSelect.appendChild(c);
-   const s=document.createElement('option');s.value=String(i);s.textContent=String(i);sectionSelect.appendChild(s);
- }
+ if(user?.school_name)document.getElementById('schoolContext').textContent=user.school_name+' • '+currentSession;
+ if(classSelect.options.length===1){for(let i=1;i<=12;i++){const c=document.createElement('option');c.value=String(i);c.textContent='Class '+i;classSelect.appendChild(c);}}
+ if(sectionSelect.options.length===1){for(let i=1;i<=12;i++){const s=document.createElement('option');s.value=String(i);s.textContent=String(i);sectionSelect.appendChild(s);}}
  function showMessage(text,type){message.textContent=text;message.className='message show '+type}
  function updateTotal(){const total=Array.from(wrap.querySelectorAll('.section-input')).reduce((sum,x)=>sum+(Number(x.value)||0),0);const el=document.getElementById('previewTotal');if(el)el.textContent=total.toLocaleString()}
  function buildFields(){
@@ -70,6 +67,7 @@ function init(){
    for(const input of inputs){const value=Number(input.value);if(input.value===''||!Number.isInteger(value)||value<0||value>99){showMessage('Student count must be a whole number from 0 to 99.','error');input.focus();return}}
    const button=document.getElementById('saveButton');button.disabled=true;
    const payload=inputs.map(x=>({school_id:schoolId,academic_session:currentSession,class_number:classNo,section:x.dataset.section,student_count:Number(x.value)}));
+   if(!db||!schoolId){showMessage('Your school session could not be loaded. Please refresh and log in again.','error');button.disabled=false;return}
    const result=await db.from('classes').upsert(payload,{onConflict:'school_id,academic_session,class_number,section'});
    if(result.error){console.error(result.error);showMessage(result.error.message||'Unable to save class structure.','error');button.disabled=false;return}
    const keep=payload.map(x=>x.section),oldIds=records.filter(r=>Number(r.class_number)===classNo&&!keep.includes(String(r.section))).map(r=>r.id);
@@ -78,6 +76,7 @@ function init(){
    showMessage('Class '+classNo+' structure saved successfully.','success');await loadRecords();setTimeout(function(){message.className='message'},1800);button.disabled=false;
  }
  async function loadRecords(){
+   if(!db||!schoolId){saved.innerHTML='<div class="empty"><h3>School session unavailable</h3><p>Please refresh the page and log in again.</p></div>';return}
    saved.innerHTML='<div class="empty"><p>Loading class structure...</p></div>';
    const result=await db.from('classes').select('id,school_id,class_number,section,student_count,academic_session').eq('school_id',schoolId).eq('academic_session',currentSession).order('class_number',{ascending:true}).order('section',{ascending:true});
    if(result.error){console.error(result.error);saved.innerHTML='<div class="empty"><h3>Unable to load class structure</h3><p>'+String(result.error.message||'Please check the classes table and policies.')+'</p></div>';return}
@@ -97,7 +96,7 @@ function init(){
  classSelect.addEventListener('change',buildFields);sectionSelect.addEventListener('change',buildFields);
  document.getElementById('importExcelButton').addEventListener('click',function(){location.href='import-data.html?type=classes'});
  document.getElementById('closeDelete').addEventListener('click',closeDelete);document.getElementById('cancelDelete').addEventListener('click',closeDelete);document.getElementById('confirmDelete').addEventListener('click',confirmDelete);modal.addEventListener('click',function(e){if(e.target===modal)closeDelete()});
- loadRecords();
+ if(db&&schoolId)loadRecords();else saved.innerHTML='<div class="empty"><h3>Ready to add class structure</h3><p>Select a class and number of sections above.</p></div>';
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
