@@ -54,7 +54,7 @@ body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}a
     }
     wrap.innerHTML='<div class="section-table"><table><thead><tr><th>Section</th><th>Number of Students</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="builder-footer"><div class="total">Total Students <strong id="previewTotal">0</strong></div><div class="builder-actions"><button class="builder-cancel" type="button" onclick="cancelStructure()">Cancel</button><button class="save" id="saveButton" onclick="saveStructure()">Confirm &amp; Save</button></div></div>';
     wrap.querySelectorAll('.section-input').forEach(function(input){
-      input.addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,2);updateTotal();});
+      input.addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,2);updateStudentTotal();});
       input.addEventListener('keydown',function(e){if(['e','E','+','-','.'].includes(e.key))e.preventDefault();});
     });
     updateStudentTotal();
@@ -72,10 +72,6 @@ const sectionSelect=document.getElementById('sectionCount');
 const sectionTableWrap=document.getElementById('sectionTableWrap');
 const savedClasses=document.getElementById('savedClasses');
 const message=document.getElementById('message');
-classSelect.addEventListener('change',buildFields);
-sectionSelect.addEventListener('change',buildFields);
-
-
 function cancelStructure(){
   classSelect.value='';
   sectionSelect.value='';
