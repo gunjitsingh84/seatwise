@@ -28,6 +28,36 @@ body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}a
 <div class="saved-head"><h3>Saved Class Structure</h3><p id="schoolContext">Current class and section configuration.</p></div><div id="savedClasses" class="saved-grid"></div><div class="footer">© 2026 SeatWise. All rights reserved.</div>
 </section></main>
 <div class="modal" id="deleteModal"><div class="modal-box"><div class="modal-head"><h3>Delete Section</h3><button class="close" type="button" id="closeDelete">×</button></div><div class="modal-body" id="deleteText"></div><div class="modal-foot"><button class="cancel" type="button" id="cancelDelete">Cancel</button><button class="confirm" type="button" id="confirmDelete">Delete</button></div></div></div>
+<script>
+(function(){
+  const classSelect=document.getElementById('classNumber');
+  const sectionSelect=document.getElementById('sectionCount');
+  const wrap=document.getElementById('sectionTableWrap');
+  if(!classSelect||!sectionSelect||!wrap)return;
+  window.seatwiseClassRecords=[];
+  window.seatwiseBuildClassFields=function(){
+    const classNo=Number(classSelect.value);
+    const count=Number(sectionSelect.value);
+    if(!classNo||!count){wrap.innerHTML='';return;}
+    const records=Array.isArray(window.seatwiseClassRecords)?window.seatwiseClassRecords:[];
+    const existing=records.filter(r=>Number(r.class_number)===classNo);
+    let rows='';
+    for(let i=0;i<count;i++){
+      const section=String.fromCharCode(65+i);
+      const found=existing.find(r=>String(r.section)===section);
+      rows+='<tr><td>Section '+section+'</td><td><input class="student-input section-input" data-section="'+section+'" type="number" min="0" max="99" step="1" value="'+(found?Number(found.student_count):'')+'" placeholder="Enter student count" inputmode="numeric"></td></tr>';
+    }
+    wrap.innerHTML='<div class="section-table"><table><thead><tr><th>Section</th><th>Number of Students</th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="builder-footer"><div class="total">Total Students <strong id="previewTotal">0</strong></div><div class="builder-actions"><button class="builder-cancel" type="button" onclick="cancelStructure()">Cancel</button><button class="save" id="saveButton" onclick="saveStructure()">Confirm &amp; Save</button></div></div>';
+    wrap.querySelectorAll('.section-input').forEach(function(input){
+      input.addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,2);updateTotal();});
+      input.addEventListener('keydown',function(e){if(['e','E','+','-','.'].includes(e.key))e.preventDefault();});
+    });
+    updateTotal();
+  };
+  classSelect.addEventListener('change',window.seatwiseBuildClassFields);
+  sectionSelect.addEventListener('change',window.seatwiseBuildClassFields);
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/auth.js"></script>
 <script>
@@ -40,23 +70,7 @@ const message=document.getElementById('message');
 classSelect.addEventListener('change',buildFields);
 sectionSelect.addEventListener('change',buildFields);
 
-function buildFields(){
-  const c=classSelect.value,n=Number(sectionSelect.value);
-  if(!c||!n){sectionTableWrap.innerHTML='';return}
-  const existing=records.filter(r=>Number(r.class_number)===Number(c));
-  let rows='';
-  for(let i=0;i<n;i++){
-    const sec=String.fromCharCode(65+i);
-    const found=existing.find(r=>String(r.section)===sec);
-    rows+=`<tr><td>Section ${sec}</td><td><input class="student-input section-input" data-section="${sec}" type="number" min="0" max="99" step="1" value="${found?Number(found.student_count):''}" placeholder="Enter student count" inputmode="numeric"></td></tr>`;
-  }
-  sectionTableWrap.innerHTML=`<div class="section-table"><table><thead><tr><th>Section</th><th>Number of Students</th></tr></thead><tbody>${rows}</tbody></table></div><div class="builder-footer"><div class="total">Total Students <strong id="previewTotal">0</strong></div><div class="builder-actions"><button class="builder-cancel" type="button" onclick="cancelStructure()">Cancel</button><button class="save" id="saveButton" onclick="saveStructure()">Confirm &amp; Save</button></div></div>`;
-  document.querySelectorAll('.section-input').forEach(x=>{
-    x.addEventListener('input',()=>{x.value=x.value.replace(/\D/g,'').slice(0,2);updateTotal()});
-    x.addEventListener('keydown',e=>{if(['e','E','+','-','.'].includes(e.key))e.preventDefault()});
-  });
-  updateTotal();
-}
+
 function cancelStructure(){
   classSelect.value='';
   sectionSelect.value='';
@@ -83,6 +97,7 @@ async function loadRecords(){
     return;
   }
   records=data||[];
+  window.seatwiseClassRecords=records;
   renderSaved();
 }
 function renderSaved(){
@@ -103,7 +118,7 @@ function editSection(id){
   classSelect.value=String(r.class_number);
   const count=records.filter(x=>Number(x.class_number)===Number(r.class_number)).length;
   sectionSelect.value=String(count);
-  buildFields();
+  window.seatwiseBuildClassFields();
   const input=document.querySelector(`.section-input[data-section="${CSS.escape(r.section)}"]`);
   if(input){input.focus();input.select()}
   window.scrollTo({top:0,behavior:'smooth'});
