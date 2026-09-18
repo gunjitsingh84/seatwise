@@ -1,6 +1,7 @@
 const SEATWISE_SUPABASE_URL='https://axhyzxuclxjojhtispqp.supabase.co';
 const SEATWISE_SUPABASE_KEY='sb_publishable_6biluj5Hfmtz3tplDaO6qw_ektOIx3h';
 const seatwiseDb=supabase.createClient(SEATWISE_SUPABASE_URL,SEATWISE_SUPABASE_KEY);
+window.seatwiseDb=seatwiseDb;
 const SEATWISE_SESSION_TIMEOUT=30*60*1000;
 function setSeatwiseSession(user){const now=Date.now();sessionStorage.setItem('seatwiseUser',JSON.stringify({id:user.id||null,name:user.name,phone:user.phone,school_id:user.school_id||null,school_name:user.school_name||null,school_logo_url:user.school_logo_url||null,issuedAt:now,lastActivity:now,expiresAt:now+SEATWISE_SESSION_TIMEOUT}))}
 function getSeatwiseSession(){try{const raw=sessionStorage.getItem('seatwiseUser');if(!raw)return null;const u=JSON.parse(raw);if(!u||!u.school_id)return null;const now=Date.now();if(u.expiresAt&&now>=u.expiresAt){clearSeatwiseSession();return null}return u}catch(e){clearSeatwiseSession();return null}}
