@@ -35,6 +35,11 @@ body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}a
   const wrap=document.getElementById('sectionTableWrap');
   if(!classSelect||!sectionSelect||!wrap)return;
   window.seatwiseClassRecords=[];
+  function updateStudentTotal(){
+    const total=[...wrap.querySelectorAll('.section-input')].reduce((sum,input)=>sum+(Number(input.value)||0),0);
+    const totalEl=wrap.querySelector('#previewTotal');
+    if(totalEl)totalEl.textContent=total.toLocaleString();
+  }
   window.seatwiseBuildClassFields=function(){
     const classNo=Number(classSelect.value);
     const count=Number(sectionSelect.value);
@@ -52,7 +57,7 @@ body{font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}a
       input.addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,2);updateTotal();});
       input.addEventListener('keydown',function(e){if(['e','E','+','-','.'].includes(e.key))e.preventDefault();});
     });
-    updateTotal();
+    updateStudentTotal();
   };
   classSelect.addEventListener('change',window.seatwiseBuildClassFields);
   sectionSelect.addEventListener('change',window.seatwiseBuildClassFields);
